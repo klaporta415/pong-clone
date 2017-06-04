@@ -31,6 +31,7 @@ var step = function() {
 // pass both paddles into update function to verify contact
 var update = function() {
 	player.update();
+	computer.update(ball);
 	ball.update(player.paddle, computer.paddle);
 };
 
@@ -86,7 +87,7 @@ Player.prototype.update = function() {
 
 Paddle.prototype.move = function(x, y) {
 	this.x += x;
-	this.y =+ y;
+	this.y += y;
 	this.x_speed = x;
 	this.y_speed = y;
 	if(this.x < 0) { //all the way to the left
@@ -100,6 +101,22 @@ Paddle.prototype.move = function(x, y) {
 
 Computer.prototype.render = function () {
 	this.paddle.render();
+};
+
+Computer.prototype.update = function(ball) {
+  var x_pos = ball.x;
+  var diff = -((this.paddle.x + (this.paddle.width / 2)) - x_pos);
+  if(diff < 0 && diff < -4) { // max speed left
+    diff = -5;
+  } else if(diff > 0 && diff > 4) { // max speed right
+    diff = 5;
+  }
+  this.paddle.move(diff, 0);
+  if(this.paddle.x < 0) {
+    this.paddle.x = 0;
+  } else if (this.paddle.x + this.paddle.width > 400) {
+    this.paddle.x = 400 - this.paddle.width;
+  }
 };
 
 // create ball object, radius of 5, positions based on x,y coordinates
@@ -141,19 +158,21 @@ Ball.prototype.update = function(paddle1, paddle2) {
 		this.y = 300;
 	}
 
-	if(top_y > 300) {
-		if(top_y < (paddle1 + paddle1.height) && bottom_y > paddle1.y && top_x < (paddle1.x + paddle1.width) && bottom_x > paddle1.x) { //hits player's paddle
-			this.y_speed = -3;
-			this.x_speed += (paddle1.x_speed / 2);
-			this.y += this.y_speed;
-		}
-	}	else {
-		if(top_y < (paddle2.y + paddle2.height) && bottom_y > paddle2.y && top_x < (paddle2.x + paddle2.width) && bottom_x > paddle2.x) {
-			this.y_speed = 3;
-			this.x_speed += (paddle2.x_speed / 2);
-			this.y += this.y_speed;
-		}
-	}
+  if(top_y > 300) {
+    if(top_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y && top_x < (paddle1.x + paddle1.width) && bottom_x > paddle1.x) {
+      // hit the player's paddle
+      this.y_speed = -3;
+      this.x_speed += (paddle1.x_speed / 2);
+      this.y += this.y_speed;
+    }
+  } else {
+    if(top_y < (paddle2.y + paddle2.height) && bottom_y > paddle2.y && top_x < (paddle2.x + paddle2.width) && bottom_x > paddle2.x) {
+      // hit the computer's paddle
+      this.y_speed = 3;
+      this.x_speed += (paddle2.x_speed / 2);
+      this.y += this.y_speed;
+    }
+  }
 };
 
 // build objects, update render function
@@ -176,7 +195,8 @@ window.addEventListener("keyup", function(event) {
 
 // with these event listeners we will add update and move prototypes to the Player object
 
-
+// add computer functionality - add to update function
+	// add Computer prototype to move paddle based on ball placement on the screen
 
 
 
