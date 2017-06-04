@@ -35,6 +35,9 @@ var update = function() {
 var render = function() {
 	context.fillStyle = "#d51eed";
 	context.fillRect(0, 0, width, height);
+	player.render();
+	computer.render();
+	ball.render();
 };
 
 // create paddle object
@@ -45,21 +48,21 @@ function Paddle(x, y, width, height) {
 	this.height = height;
 	this.x_speed = 0;
 	this.y_speed = 0;
-}
+};
 
 Paddle.prototype.render = function() {
-	context.fillstyle = "#1eeded";
+	context.fillStyle = "#1eeded";
 	context.fillRect(this.x, this.y, this.width, this.height);
 };
 
 // create players, with Paddle objects - one will be the computer
 function Player() {
 	this.paddle = new Paddle(175, 580, 50, 10);
-}
+};
 
 function Computer() {
 	this.paddle = new Paddle(175, 10, 50, 10)
-}
+};
 
 // when rendering players - render their paddles
 Player.prototype.render = function() {
@@ -78,6 +81,18 @@ function Ball(x, y) {
 	this.y_speed = 3;
 	this.radius = 5;
 }
+
+Ball.prototype.render = function() {
+	context.beginPath();
+	context.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
+	context.fillStyle = "#ceed1e";
+	context.fill();
+};
+
+// build objects, update render function
+var player = new Player();
+var computer = new Computer();
+var ball = new Ball(200, 300);
 
 
 
