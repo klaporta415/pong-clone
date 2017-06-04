@@ -36,7 +36,7 @@ var update = function() {
 };
 
 var render = function() {
-	context.fillStyle = "#d51eed";
+	context.fillStyle = "#080f70";
 	context.fillRect(0, 0, width, height);
 	player.render();
 	computer.render();
@@ -131,7 +131,7 @@ function Ball(x, y) {
 Ball.prototype.render = function() {
 	context.beginPath();
 	context.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
-	context.fillStyle = "#ceed1e";
+	context.fillStyle = "#efc20e";
 	context.fill();
 };
 
