@@ -30,6 +30,7 @@ var step = function() {
 
 // pass both paddles into update function to verify contact
 var update = function() {
+	player.update();
 	ball.update(player.paddle, computer.paddle);
 };
 
@@ -69,6 +70,33 @@ function Computer() {
 Player.prototype.render = function() {
 	this.paddle.render();
 };
+
+Player.prototype.update = function() {
+	for(var key in keysDown) {
+		var value = Number(key);
+		if(value == 37) { //left arrow
+			this.paddle.move(-4, 0);
+		} else if (value == 39) { // right arrow
+			this.paddle.move(4, 0);
+		} else {
+			this.paddle.move(0,0);
+		}
+	}
+};
+
+Paddle.prototype.move = function(x, y) {
+	this.x += x;
+	this.y =+ y;
+	this.x_speed = x;
+	this.y_speed = y;
+	if(this.x < 0) { //all the way to the left
+		this.x = 0;
+		this.x_speed = 0;
+	} else if(this.x + this.width > 400) { //all the way right
+		this.x = 400 - this.width;
+		this.x_speed = 0;
+	}
+}
 
 Computer.prototype.render = function () {
 	this.paddle.render();
@@ -133,9 +161,20 @@ var player = new Player();
 var computer = new Computer();
 var ball = new Ball(200, 300);
 
-// Animation! update update function and add update prototype to Ball object
+// Animation! update update function and add update prototype to Ball object (Ball.prototype.update)
 
+// add controls for player to update position of thei paddle 
+var keysDown = {};
 
+window.addEventListener("keydown", function(event) {
+	keysDown[event.keyCode] = true;
+});
+
+window.addEventListener("keyup", function(event) {
+	delete keysDown[event.keyCode];
+});
+
+// with these event listeners we will add update and move prototypes to the Player object
 
 
 
