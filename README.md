@@ -7,4 +7,4 @@ To play:
   Use arrow keys on keyboard to move the paddle on the bottom.
   Keep yellow ball from going past your paddle and try to get yellow ball past computer's paddle.
   
-  [![Game Play](/pong-screenshot.png?raw=true "Pong Clone Game Play")]
+  ![Game Play](/pong-screenshot.png?raw=true "Pong Clone Game Play")
